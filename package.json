@@ -1,0 +1,36 @@
+{
+	"name": "mongoose-i18n-error",
+	"version": "0.1.0",
+	"description": "lightweight module for node.js/express.js to create beautiful mongoose i18n validation error messages",
+	"author": {
+		"name": "Matthias Fey",
+		"email": "matthias.fey@tu-dortmund.de",
+		"url": "https://github.com/rusty1s"
+	},
+	"keywords": [
+		"mongoose",
+		"i18n",
+		"error",
+		"mongodb"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/rusty1s/mongoose-i18n-error.git"
+	},
+	"license": "MIT",
+	"readmeFilename": "README.md",
+	"bugs": {
+		"url": "https://github.com/rusty1s/mongoose-i18n-error/issues"
+	},
+	"main": "index.js",
+	"scripts": {
+		"test": "mocha test"
+	},
+	"devDependencies": {
+		"mongoose": "^4.2.8",
+		"i18n": "^0.5.0",
+		"i18n-2": "^0.6.0",
+		"mocha": "^2.3.4",
+		"should": "^7.1.1"
+	}
+}
