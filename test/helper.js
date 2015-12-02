@@ -56,23 +56,6 @@ module.exports = {
 		});
 	},
 
-	createMultipleSchema: function() {
-		return new mongoose.Schema({
-			string: {
-				type: String,
-				required: true,
-				minlength: 3,
-				maxlength: 10
-			},
-			number: {
-				type: Number,
-				required: true,
-				min: 0,
-				max: 10
-			}
-		});
-	},
-
 	createCustomValidatorSchema: function() {
 		return new mongoose.Schema({
 			value: {
@@ -83,6 +66,19 @@ module.exports = {
 					},
 					message: 'model.value.custom'
 				}
+			}
+		});
+	},
+
+	createMultipleValidatorSchema: function() {
+		return new mongoose.Schema({
+			string: {
+				type: String,
+				required: true
+			},
+			number: {
+				type: Number,
+				required: true
 			}
 		});
 	}
