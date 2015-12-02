@@ -14,5 +14,60 @@ module.exports = {
 		mongoose.modelSchemas = {};
 		mongoose.connection.models = {};
 		done();
+	},
+
+	createStringSchema: function() {
+		return new mongoose.Schema({
+			value: {
+				type: String,
+				required: true,
+				minlength: 3,
+				maxlength: 10
+			}
+		});
+	},
+
+	createStringMatchSchema: function() {
+		return new mongoose.Schema({
+			value: {
+				type: String,
+				match: /(A-Z)*/i
+			}
+		});
+	},
+
+	createStringEnumSchema: function() {
+		return new mongoose.Schema({
+			value: {
+				type: Number,
+				integer: true,
+				enum: 'true false'.split(' ')
+			}
+		});
+	},
+
+	createNumberSchema: function() {
+		return new mongoose.Schema({
+			value: {
+				type: Number,
+				required: true,
+				min: 0,
+				max: 10
+			}
+		});
+	},
+
+	createCustomValidatorSchema: function() {
+		return new mongoose.Schema({
+			value: {
+				type: String,
+				validate: {
+					validator: function(v) {
+						return /(A-Z)*/i.test(v);
+					},
+					message: 'custom'
+				}
+			}
+		});
 	}
 };
