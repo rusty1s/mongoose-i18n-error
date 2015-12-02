@@ -52,5 +52,25 @@ module.exports = {
 		});
 
 		return result;
+	},
+
+	parseUniqueError: function(err, i18n) {
+		if (!err ||  err.name !== 'MongoError' || !(err.code === 11000 ||  err.code === 11001)) return err;
+
+		var prefix = 'error';
+		var result = {};
+
+		var regex = /index:\s*.+?\.\$(\S*)_.+\s*dup key:\s*\{.*?:\s*"(.*)"\s*\}/;
+		var matches = regex.exec(err.message);
+		var key = matches[1];
+		var value = matches[2];
+
+		result[key] = {
+			type: 'unique',
+			message: i18n(prefix + '.unique'),
+			value: value
+		};
+
+		return result;
 	}
 };

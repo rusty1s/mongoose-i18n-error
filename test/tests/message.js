@@ -197,5 +197,28 @@ module.exports = function() {
 				done();
 			});
 		});
+
+		it('should parse unique errors correctly', function(done) {
+			var Model = mongoose.model('Model', helper.createUniqueSchema());
+			new Model({
+				value: 'test'
+			}).save(function(err) {
+				should.not.exist(err);
+
+				new Model({
+					value: 'test'
+				}).save(function(err) {
+					err = i18nError.parseUniqueError(err, i18n);
+					should.exist(err);
+					Object.keys(err).length.should.be.exactly(1);
+					should.exist(err.value);
+					err.value.type.should.equal('unique');
+					err.value.message.should.equal('error.unique');
+					err.value.value.should.equal('test');
+
+					done();
+				});
+			});
+		});
 	});
 };

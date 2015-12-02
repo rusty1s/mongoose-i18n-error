@@ -81,5 +81,14 @@ module.exports = {
 				required: true
 			}
 		});
+	},
+
+	createUniqueSchema: function() {
+		return new mongoose.Schema({
+			value: {
+				type: String,
+				unique: true
+			}
+		});
 	}
 };
