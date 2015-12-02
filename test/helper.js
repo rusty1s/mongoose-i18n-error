@@ -31,7 +31,7 @@ module.exports = {
 		return new mongoose.Schema({
 			value: {
 				type: String,
-				match: /(A-Z)*/i
+				match: /^[A-Z]+$/i
 			}
 		});
 	},
@@ -39,8 +39,7 @@ module.exports = {
 	createStringEnumSchema: function() {
 		return new mongoose.Schema({
 			value: {
-				type: Number,
-				integer: true,
+				type: String,
 				enum: 'true false'.split(' ')
 			}
 		});
@@ -57,13 +56,30 @@ module.exports = {
 		});
 	},
 
+	createMultipleSchema: function() {
+		return new mongoose.Schema({
+			string: {
+				type: String,
+				required: true,
+				minlength: 3,
+				maxlength: 10
+			},
+			number: {
+				type: Number,
+				required: true,
+				min: 0,
+				max: 10
+			}
+		});
+	},
+
 	createCustomValidatorSchema: function() {
 		return new mongoose.Schema({
 			value: {
 				type: String,
 				validate: {
 					validator: function(v) {
-						return /(A-Z)*/i.test(v);
+						return /^[A-Z]+$/i.test(v);
 					},
 					message: 'custom'
 				}
