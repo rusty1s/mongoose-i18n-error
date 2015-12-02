@@ -7,6 +7,10 @@ var mongoose = require('mongoose');
 var helper = require('../helper');
 var i18nError = require('../../index');
 
+var i18n = function(message, condition) {
+	return message + (condition ? '.' + condition : '');
+};
+
 module.exports = function() {
 
 	describe('Message', function() {
@@ -17,25 +21,25 @@ module.exports = function() {
 			// required error
 			var Model = mongoose.model('Model', helper.createStringSchema());
 			new Model().save(function(err) {
-				err = i18nError.parseValidationError(err);
+				err = i18nError.parseValidationError(err, i18n);
 
 				// minlength error
 				new Model({
 					value: 'ab'
 				}).save(function(err) {
-					err = i18nError.parseValidationError(err);
+					err = i18nError.parseValidationError(err, i18n);
 
 					// maxlength error
 					new Model({
 						value: 'abcdefghijk'
 					}).save(function(err) {
-						err = i18nError.parseValidationError(err);
+						err = i18nError.parseValidationError(err, i18n);
 
 						// cast error
 						new Model({
 							value: {}
 						}).save(function(err) {
-							err = i18nError.parseValidationError(err);
+							err = i18nError.parseValidationError(err, i18n);
 
 							done();
 						});
@@ -50,7 +54,7 @@ module.exports = function() {
 			new Model({
 				value: '1234'
 			}).save(function(err) {
-				err = i18nError.parseValidationError(err);
+				err = i18nError.parseValidationError(err, i18n);
 
 				done();
 			});
@@ -62,7 +66,7 @@ module.exports = function() {
 			new Model({
 				value: 'invalid'
 			}).save(function(err) {
-				err = i18nError.parseValidationError(err);
+				err = i18nError.parseValidationError(err, i18n);
 
 				done();
 			});
@@ -74,7 +78,7 @@ module.exports = function() {
 			new Model({
 				value: '1234'
 			}).save(function(err) {
-				err = i18nError.parseValidationError(err);
+				err = i18nError.parseValidationError(err, i18n);
 
 				done();
 			});

@@ -5,7 +5,7 @@ module.exports = {
 
 	// throw error if i18n
 
-	parseValidationError: function(err) {
+	parseValidationError: function(err, i18n) {
 		if (!err ||  err.name !== 'ValidationError') return err;
 
 		var prefix = 'error';
@@ -15,36 +15,38 @@ module.exports = {
 		Object.keys(errors).forEach(function(key) {
 			var error = errors[key];
 			var type = error.kind;
-			var message = prefix;
+			var condition;
+			var message = prefix + '.';
 			var value = error.value;
 
 			// cast error
 			if (error.name === 'CastError') {
 				type = 'cast';
-				message += '.cast';
+				message += 'cast';
 			}
 
 			// match or enum error
 			else if (type === 'regexp' ||  type === 'enum') {
 				var model = err.message.substring(0, err.message.lastIndexOf(' validation failed')).toLowerCase();
-				message += '.' + model + '.' + key + '.' + errors[key].kind;
+				message += model + '.' + key + '.' + type;
 			}
 
 			// custom validation error
 			else if (type.match(/user defined/)) {
-				type = error.message;
-				message += '.' + error.message;
+				var array = error.message.split(/\./g);
+				type = array[array.length - 1];
+				message += error.message;
 			}
 
 			// all other errors
 			else {
-				var condition = error.properties[type];
-				message += '.' + type + (condition ? ', ' + condition : '');
+				if (error.properties) condition = error.properties[type];
+				message += type;
 			}
 
 			result[key] = {
 				type: type,
-				message: message,
+				message: i18n(message, condition),
 				value: value
 			};
 		});

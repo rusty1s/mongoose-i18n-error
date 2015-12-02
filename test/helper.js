@@ -81,7 +81,7 @@ module.exports = {
 					validator: function(v) {
 						return /^[A-Z]+$/i.test(v);
 					},
-					message: 'custom'
+					message: 'model.value.custom'
 				}
 			}
 		});
