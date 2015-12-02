@@ -16,7 +16,7 @@ module.exports = function() {
 	describe('Message', function() {
 		afterEach(helper.afterEach);
 
-		it('should parse all default string errors correctly', function(done) {
+		it('should parse default string errors correctly', function(done) {
 
 			// required error
 			var Model = mongoose.model('Model', helper.createStringSchema());
@@ -107,7 +107,7 @@ module.exports = function() {
 			});
 		});
 
-		it('should parse all default number errors correctly', function(done) {
+		it('should parse default number errors correctly', function(done) {
 
 			// required error
 			var Model = mongoose.model('Model', helper.createNumberSchema());
