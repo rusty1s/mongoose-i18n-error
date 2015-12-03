@@ -13,6 +13,7 @@ module.exports = {
 		mongoose.models = {};
 		mongoose.modelSchemas = {};
 		mongoose.connection.models = {};
+
 		done();
 	},
 

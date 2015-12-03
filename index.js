@@ -1,14 +1,37 @@
 /* jshint node: true */
 'use strict';
 
-module.exports = {
+var i18nError = module.exports = function(options) {
+	options = options || {};
+	this.prefix = options.prefix ||  this.prefix;
+};
 
-	// throw error if i18n
+i18nError.prototype = {
+	prefix: 'error',
+
+	handler: function(handler) {
+		var self = this;
+
+		return function(err, req, res, next) {
+			if (!err) return next(err);
+
+			var i18n;
+			//if (res.__) __ = res.__;
+			if (req.i18n && typeof req.i18n.__ === 'function') i18n = req.i18n;
+			if (!i18n) throw 'no i18n.__ function found.';
+
+			var mongooseErr = self.parseValidationError(err, i18n);
+			if (!mongooseErr) mongooseErr = self.parseUniqueError(err, i18n);
+			if (mongooseErr) {
+				return handler(mongooseErr, req, res, next);
+			} else return next(err);
+		};
+	},
 
 	parseValidationError: function(err, i18n) {
-		if (!err ||  err.name !== 'ValidationError') return err;
+		if (!err ||  err.name !== 'ValidationError') return null;
 
-		var prefix = 'error';
+		var self = this;
 		var result = {};
 
 		var errors = err.errors;
@@ -16,7 +39,7 @@ module.exports = {
 			var error = errors[key];
 			var type = error.kind;
 			var condition;
-			var message = prefix + '.';
+			var message = self.prefix + '.';
 			var value = error.value;
 
 			// cast error
@@ -46,7 +69,7 @@ module.exports = {
 
 			result[key] = {
 				type: type,
-				message: i18n(message, condition),
+				message: i18n.__(message, condition),
 				value: value
 			};
 		});
@@ -55,9 +78,8 @@ module.exports = {
 	},
 
 	parseUniqueError: function(err, i18n) {
-		if (!err ||  err.name !== 'MongoError' || !(err.code === 11000 ||  err.code === 11001)) return err;
+		if (!err ||  err.name !== 'MongoError' || !(err.code === 11000 ||  err.code === 11001)) return null;
 
-		var prefix = 'error';
 		var result = {};
 
 		var regex = /index:\s*.+?\.\$(\S*)_.+\s*dup key:\s*\{.*?:\s*"(.*)"\s*\}/;
@@ -67,7 +89,7 @@ module.exports = {
 
 		result[key] = {
 			type: 'unique',
-			message: i18n(prefix + '.unique'),
+			message: i18n.__(this.prefix + '.unique'),
 			value: value
 		};
 

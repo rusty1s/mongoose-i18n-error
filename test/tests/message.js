@@ -5,10 +5,12 @@ var mongoose = require('mongoose');
 var should = require('should');
 
 var helper = require('../helper');
-var i18nError = require('../../index');
+var i18nMongooseError = new(require('../../index'))();
 
-var i18n = function(message, condition) {
-	return message + (condition !== undefined ? '.' + condition : '');
+var i18n = {
+	__: function(message, condition) {
+		return message + (condition !== undefined ? '.' + condition : '');
+	}
 };
 
 module.exports = function() {
@@ -17,11 +19,10 @@ module.exports = function() {
 		afterEach(helper.afterEach);
 
 		it('should parse default string errors correctly', function(done) {
-
 			// required error
 			var Model = mongoose.model('Model', helper.createStringSchema());
 			new Model().save(function(err) {
-				err = i18nError.parseValidationError(err, i18n);
+				err = i18nMongooseError.parseValidationError(err, i18n);
 				should.exist(err);
 				Object.keys(err).length.should.be.exactly(1);
 				should.exist(err.value);
@@ -33,7 +34,7 @@ module.exports = function() {
 				new Model({
 					value: 'ab'
 				}).save(function(err) {
-					err = i18nError.parseValidationError(err, i18n);
+					err = i18nMongooseError.parseValidationError(err, i18n);
 					should.exist(err);
 					Object.keys(err).length.should.be.exactly(1);
 					should.exist(err.value);
@@ -45,7 +46,7 @@ module.exports = function() {
 					new Model({
 						value: 'abcdefghijk'
 					}).save(function(err) {
-						err = i18nError.parseValidationError(err, i18n);
+						err = i18nMongooseError.parseValidationError(err, i18n);
 						should.exist(err);
 						Object.keys(err).length.should.be.exactly(1);
 						should.exist(err.value);
@@ -57,7 +58,7 @@ module.exports = function() {
 						new Model({
 							value: {}
 						}).save(function(err) {
-							err = i18nError.parseValidationError(err, i18n);
+							err = i18nMongooseError.parseValidationError(err, i18n);
 							should.exist(err);
 							Object.keys(err).length.should.be.exactly(1);
 							should.exist(err.value);
@@ -77,7 +78,7 @@ module.exports = function() {
 			new Model({
 				value: '1234'
 			}).save(function(err) {
-				err = i18nError.parseValidationError(err, i18n);
+				err = i18nMongooseError.parseValidationError(err, i18n);
 				should.exist(err);
 				Object.keys(err).length.should.be.exactly(1);
 				should.exist(err.value);
@@ -95,7 +96,7 @@ module.exports = function() {
 			new Model({
 				value: 'invalid'
 			}).save(function(err) {
-				err = i18nError.parseValidationError(err, i18n);
+				err = i18nMongooseError.parseValidationError(err, i18n);
 				should.exist(err);
 				Object.keys(err).length.should.be.exactly(1);
 				should.exist(err.value);
@@ -112,7 +113,7 @@ module.exports = function() {
 			// required error
 			var Model = mongoose.model('Model', helper.createNumberSchema());
 			new Model().save(function(err) {
-				err = i18nError.parseValidationError(err, i18n);
+				err = i18nMongooseError.parseValidationError(err, i18n);
 				should.exist(err);
 				Object.keys(err).length.should.be.exactly(1);
 				should.exist(err.value);
@@ -124,7 +125,7 @@ module.exports = function() {
 				new Model({
 					value: -1
 				}).save(function(err) {
-					err = i18nError.parseValidationError(err, i18n);
+					err = i18nMongooseError.parseValidationError(err, i18n);
 					should.exist(err);
 					Object.keys(err).length.should.be.exactly(1);
 					should.exist(err.value);
@@ -136,7 +137,7 @@ module.exports = function() {
 					new Model({
 						value: 11
 					}).save(function(err) {
-						err = i18nError.parseValidationError(err, i18n);
+						err = i18nMongooseError.parseValidationError(err, i18n);
 						should.exist(err);
 						Object.keys(err).length.should.be.exactly(1);
 						should.exist(err.value);
@@ -148,7 +149,7 @@ module.exports = function() {
 						new Model({
 							value: {}
 						}).save(function(err) {
-							err = i18nError.parseValidationError(err, i18n);
+							err = i18nMongooseError.parseValidationError(err, i18n);
 							should.exist(err);
 							Object.keys(err).length.should.be.exactly(1);
 							should.exist(err.value);
@@ -167,7 +168,7 @@ module.exports = function() {
 			new Model({
 				value: '1234'
 			}).save(function(err) {
-				err = i18nError.parseValidationError(err, i18n);
+				err = i18nMongooseError.parseValidationError(err, i18n);
 				should.exist(err);
 				Object.keys(err).length.should.be.exactly(1);
 				should.exist(err.value);
@@ -182,7 +183,7 @@ module.exports = function() {
 		it('should parse multiple errors correctly', function(done) {
 			var Model = mongoose.model('Model', helper.createMultipleValidatorSchema());
 			new Model().save(function(err) {
-				err = i18nError.parseValidationError(err, i18n);
+				err = i18nMongooseError.parseValidationError(err, i18n);
 				should.exist(err);
 				Object.keys(err).length.should.be.exactly(2);
 				should.exist(err.string);
@@ -208,7 +209,7 @@ module.exports = function() {
 				new Model({
 					value: 'test'
 				}).save(function(err) {
-					err = i18nError.parseUniqueError(err, i18n);
+					err = i18nMongooseError.parseUniqueError(err, i18n);
 					should.exist(err);
 					Object.keys(err).length.should.be.exactly(1);
 					should.exist(err.value);
@@ -218,6 +219,18 @@ module.exports = function() {
 
 					done();
 				});
+			});
+		});
+
+		it('should have the correct prefix', function(done) {
+			var Model = mongoose.model('Model', helper.createStringSchema());
+			new Model().save(function(err) {
+				err = new(require('../../index'))({
+					prefix: 'err'
+				}).parseValidationError(err, i18n);
+				err.value.message.should.equal('err.required');
+
+				done();
 			});
 		});
 	});

@@ -5,9 +5,8 @@
 //var should = require('should');
 
 var helper = require('../helper');
-//var i18nError = require('../../index');
 
-module.exports = function() {
+module.exports = function(app) {
 
 	describe('I18n', function() {
 		afterEach(helper.afterEach);
