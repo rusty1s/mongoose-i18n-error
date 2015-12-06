@@ -51,9 +51,9 @@ app.use(i18nMongooseError.handler(function(err, req, res, next) {
 
 ## Options
 
-By default, the plugin will prefix the error messages in your locale files with `'error.':
+By default, the plugin will prefix the error messages in your locale files with `'error.'`:
 
-```
+```js
 "error.required": "is required",
 "error.minlength": "needs a minimum length of %s",
 "error.user.password.regexp": "is no valid email",
@@ -80,7 +80,7 @@ var Schema = new mongoose.Schema({
 			validator: function(v) {
 				return /^[A-Z]*$/i.test(v);
 			},
-			message: 'user.name.alpha'	// or simply 'alpha'
+			message: 'user.name.alpha'	// or 'alpha'
 		}
 	}
 });
