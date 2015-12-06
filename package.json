@@ -29,7 +29,6 @@
 	"devDependencies": {
 		"mongoose": "^4.2.8",
 		"i18n": "^0.5.0",
-		"i18n-2": "^0.6.0",
 		"express": "^4.13.3",
 		"should": "^7.1.1",
 		"supertest": "1.1.0"

@@ -1,0 +1,13 @@
+{
+	"error.required": "is required",
+	"error.minlength": "needs a minimum length of %s",
+	"error.maxlength": "has a length greater than %s",
+	"error.model.value.regexp": "must consist of only letters",
+	"error.model.value.enum": "must be either \"true\" or \"false\"",
+	"error.min": "needs a minimum value of %s",
+	"error.max": "has a value greater than %s",
+	"error.model.value.custom": "must consist of only letters",
+	"error.unique": "already exists",
+	"err.required": "is not allowed to left blank",
+	"error.cast": "is not valid"
+}
