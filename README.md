@@ -9,7 +9,7 @@ I never liked the mongoose/mongo error messages caused by mongoose validation or
 {
 	username: {
 		type: 'required',
-		message: 'is required'',
+		message: 'is required',
 		value: undefined
 	},
 	email: {
@@ -51,7 +51,7 @@ app.use(i18nMongooseError.handler(function(err, req, res, next) {
 
 ## Options
 
-By default, the plugin will prefix the error messages in your locales files with 'error.':
+By default, the plugin will prefix the error messages in your locale files with `'error.':
 
 ```
 "error.required": "is required",
@@ -70,9 +70,9 @@ var i18nMongooseError = new (require('mongoose-i18n-error'))({
 
 ## Custom validators
 
-In your custom mongoose validators your error message should now apply to the key in your locales files.
+In your custom mongoose validators your error message should now apply to the key in your locales.
 
-```
+```js
 var Schema = new mongoose.Schema({
 	name: {
 		type: String,
