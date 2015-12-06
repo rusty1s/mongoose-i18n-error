@@ -2,9 +2,8 @@
 'use strict';
 
 var mongoose = require('mongoose');
-var i18n = require('i18n-2');
+var i18n2 = require('i18n-2');
 var request = require('supertest');
-var should = require('should');
 
 var helper = require('../helper');
 var i18nMongooseError = new(require('../../index'))();
@@ -14,7 +13,7 @@ module.exports = function(app) {
 	describe('I18n-2', function() {
 		afterEach(helper.afterEach);
 
-		i18n.expressBind(app, {
+		i18n2.expressBind(app, {
 			locales: ['en'],
 			session: false
 		});

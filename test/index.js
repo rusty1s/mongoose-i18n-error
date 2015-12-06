@@ -15,7 +15,7 @@ mongoose.connection.on('error', function() {
 describe('Mongoose I18n Error', function() {
 	require('./tests/message')();
 	require('./tests/i18n')(app);
-	require('./tests/i18n-2')(app);
+	//require('./tests/i18n-2')(app);
 });
 
 server.close();

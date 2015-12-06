@@ -16,9 +16,9 @@ i18nError.prototype = {
 			if (!err) return next(err);
 
 			var i18n;
-			//if (res.__) __ = res.__;
-			if (req.i18n && typeof req.i18n.__ === 'function') i18n = req.i18n;
-			if (!i18n) throw 'no i18n.__ function found.';
+			if (typeof res.__ === 'function') i18n = res;
+			else if (req.i18n && typeof req.i18n.__ === 'function') i18n = req.i18n;
+			else throw 'no i18n.__ function found.';
 
 			var mongooseErr = self.parseValidationError(err, i18n);
 			if (!mongooseErr) mongooseErr = self.parseUniqueError(err, i18n);
@@ -45,7 +45,7 @@ i18nError.prototype = {
 			// cast error
 			if (error.name === 'CastError') {
 				type = 'cast';
-				message += 'cast';
+				message += type;
 			}
 
 			// match or enum error

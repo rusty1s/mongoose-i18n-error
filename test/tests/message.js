@@ -2,16 +2,19 @@
 'use strict';
 
 var mongoose = require('mongoose');
+var i18n = require('i18n');
 var should = require('should');
 
 var helper = require('../helper');
 var i18nMongooseError = new(require('../../index'))();
 
-var i18n = {
-	__: function(message, condition) {
-		return message + (condition !== undefined ? '.' + condition : '');
-	}
-};
+i18n.configure({
+	locales: ['de'],
+	defaultLocale: 'de',
+	directory: './locales'
+});
+
+i18n.setLocale('de');
 
 module.exports = function() {
 
